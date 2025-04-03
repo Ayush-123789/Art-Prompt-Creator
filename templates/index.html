@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Prompt Creator ✨</title>
+    <style>
+        /* --- Purple & Black Theme --- */
+        :root {
+            --bg-color: #1a1a1d;
+            /* Dark background */
+            --form-bg: #25252a;
+            /* Slightly lighter dark for form */
+            --text-color: #e0e0e0;
+            /* Light grey text */
+            --heading-color: #c3a9ff;
+            /* Light purple for headings */
+            --primary-purple: #8A2BE2;
+            /* Blue Violet */
+            --hover-purple: #9932CC;
+            /* Dark Orchid */
+            --border-color: #4b0082;
+            /* Indigo for borders */
+            --input-bg: #333338;
+            /* Dark input background */
+            --result-bg: #2a2a30;
+            /* Dark result background */
+            --error-color: #ff7b7b;
+            /* Light red for errors */
+            --loading-color: #b3b3b3;
+            /* Medium grey for loading */
+        }
+
+        /* Add these styles within the <style> tag */
+
+        body {
+            /* ... keep existing body styles ... */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 100%;
+            /* Allow full width for background */
+            min-height: 100vh;
+            /* Ensure body covers viewport height */
+            margin: 0;
+            /* Remove default margin */
+            padding: 0;
+            /* Remove default padding */
+            background-color: var(--bg-color);
+            /* Fallback color */
+
+            /* --- Background Image --- */
+            /* --- Replace 'YOUR_IMAGE_URL.jpg' with an actual URL --- */
+            background-image: linear-gradient(rgba(26, 26, 29, 0.85), rgba(26, 26, 29, 0.85)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080');
+            /* Example URL with overlay */
+            background-size: cover;
+            /* Cover the entire page */
+            background-position: center center;
+            /* Center the image */
+            background-repeat: no-repeat;
+            /* Don't repeat the image */
+            background-attachment: fixed;
+            /* Keep background fixed during scroll */
+
+            color: var(--text-color);
+            position: relative;
+            /* Needed for absolute positioning of children */
+            display: flex;
+            /* Use flexbox to center content vertically */
+            justify-content: center;
+            /* Center content horizontally */
+            align-items: center;
+            /* Center content vertically */
+            flex-direction: column;
+            /* Stack content vertically */
+            padding-top: 60px;
+            /* Add padding to avoid overlap with student info */
+            padding-bottom: 40px;
+        }
+
+        /* Container for the main content */
+        .main-content {
+            max-width: 600px;
+            width: 90%;
+            /* Responsive width */
+            /* Ensure content background doesn't overlap image fully */
+            padding: 20px;
+            /* Add padding inside the container */
+            border-radius: 12px;
+            /* Optional: round corners for the content area */
+            /* background-color: rgba(37, 37, 42, 0.8); */
+            /* Optional: slight background for content area */
+        }
+
+
+        /* --- Student Info Box --- */
+        .student-info {
+            position: absolute;
+            /* Position relative to the body */
+            top: 15px;
+            right: 20px;
+            background-color: rgba(37, 37, 42, 0.7);
+            /* Semi-transparent dark background */
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            /* Ensure it's above other content */
+        }
+
+        .student-info p {
+            margin: 5px 0;
+            /* Space out the names */
+            font-size: 0.85rem;
+            color: var(--text-color);
+            text-align: right;
+        }
+
+        /* Adjust h1 positioning slightly if needed */
+        h1 {
+            /* ... keep existing h1 styles ... */
+            margin-top: 0;
+            /* Adjust margin if needed due to padding */
+            margin-bottom: 20px;
+        }
+
+        /* Adjust form margin if needed */
+        form {
+            /* ... keep existing form styles ... */
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--heading-color);
+            text-align: center;
+            margin-bottom: 30px;
+            /* More space */
+            font-weight: 600;
+        }
+
+        form {
+            background: var(--form-bg);
+            padding: 25px;
+            /* More padding */
+            border-radius: 12px;
+            /* More rounded */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            /* Enhanced shadow */
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            /* Slightly less bold */
+            color: var(--heading-color);
+            /* Use heading purple for labels */
+        }
+
+        input[type="text"] {
+            width: calc(100% - 24px);
+            /* Adjust width for padding */
+            padding: 12px;
+            /* More padding */
+            margin-bottom: 20px;
+            /* More space */
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-purple);
+            outline: none;
+            /* Remove default outline */
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
+            /* Purple glow on focus */
+        }
+
+        button {
+            width: 100%;
+            /* Full width */
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            background-color: var(--primary-purple);
+            color: white;
+            font-size: 1.1rem;
+            /* Slightly larger font */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            /* Smooth transitions */
+        }
+
+        button:hover {
+            background-color: var(--hover-purple);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            /* Click effect */
+        }
+
+        #result {
+            margin-top: 30px;
+            background: var(--result-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--primary-purple);
+            /* Purple dashed border */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #result h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--heading-color);
+            /* Purple heading */
+            font-weight: 600;
+        }
+
+        #result p {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-color);
+            /* Light text */
+            line-height: 1.6;
+            /* Better readability */
+        }
+
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: var(--loading-color);
+            /* Lighter grey for loading */
+            margin-top: 20px;
+        }
+
+        .error {
+            color: var(--error-color);
+            /* Brighter red for errors */
+            font-weight: bold;
+            text-align: center;
+            background-color: rgba(255, 123, 123, 0.1);
+            /* Slight red background */
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--error-color);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Student Info Box -->
+    <div class="student-info">
+        <h1>Created By:</h1>
+        <p>12318247 - Ayush Pradhan</p>
+        <p>12307961 - Utkarsh Kushwaha</p>
+    </div>
+    <!-- Add this opening div -->
+
+    <div class="main-content">
+        <h1>🎨 Art Prompt Creator 🖌️</h1>
+        <form id="prompt-form">
+            <label for="theme">Theme (e.g., sci-fi, fantasy, cyberpunk):</label>
+            <input type="text" id="theme" name="theme" value="fantasy">
+
+            <label for="style">Style (e.g., watercolor, hyperrealistic, anime):</label>
+            <input type="text" id="style" name="style" value="digital painting">
+
+            <button type="submit">Generate Prompt!</button>
+        </form>
+
+        <div id="result" style="display: none;">
+            <h3>Generated Prompt:</h3>
+            <p id="prompt-text"></p>
+        </div>
+        <div id="loading" class="loading" style="display: none;">Generating... please wait 🤔</div>
+        <div id="error-message" class="error" style="display: none;"></div>
+    </div>
+    <script>
+        // JavaScript remains the same - no changes needed here
+        const form = document.getElementById('prompt-form');
+        const resultDiv = document.getElementById('result');
+        const promptText = document.getElementById('prompt-text');
+        const loadingDiv = document.getElementById('loading');
+        const errorDiv = document.getElementById('error-message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const theme = document.getElementById('theme').value;
+            const style = document.getElementById('style').value;
+
+            // Reset UI
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+
+            try {
+                const response = await fetch('/generate_prompt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded', // Sending as form data
+                    },
+                    body: new URLSearchParams({ // Encode form data
+                        'theme': theme,
+                        'style': style
+                    })
+                });
+
+                const data = await response.json();
+                loadingDiv.style.display = 'none';
+
+                if (data.success) {
+                    promptText.textContent = data.art_prompt;
+                    resultDiv.style.display = 'block';
+                } else {
+                    errorDiv.textContent = 'Error: ' + (data.error || 'Failed to generate prompt.');
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                errorDiv.textContent = 'Network or server error: ' + error;
+                errorDiv.style.display = 'block';
+                console.error('Fetch error:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>
