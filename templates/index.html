@@ -207,31 +207,142 @@
             /* Click effect */
         }
 
+                /* ... (Keep all existing CSS rules above this line) ... */
+
+        /* --- Result Box Enhancements --- */
         #result {
+            position: relative; /* Needed for absolute positioning of the button if desired */
             margin-top: 30px;
             background: var(--result-bg);
             padding: 20px;
             border-radius: 8px;
             border: 1px dashed var(--primary-purple);
-            /* Purple dashed border */
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
 
-        #result h3 {
-            margin-top: 0;
+        .result-header {
+            display: flex; /* Align title and button */
+            justify-content: space-between; /* Space them out */
+            align-items: center; /* Vertically align */
             margin-bottom: 10px;
+        }
+
+        #result h3 {
+            margin: 0; /* Remove default margin */
             color: var(--heading-color);
-            /* Purple heading */
             font-weight: 600;
         }
 
-        #result p {
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        #copy-button {
+            background-color: var(--input-bg); /* Use input background color */
             color: var(--text-color);
-            /* Light text */
-            line-height: 1.6;
-            /* Better readability */
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex; /* Align icon and text */
+            align-items: center;
+            gap: 5px; /* Space between icon and text */
+            transition: background-color 0.2s ease, color 0.2s ease;
+            width: auto; /* Override full width */
+        }
+
+        #copy-button:hover {
+            background-color: var(--border-color);
+            color: white;
+        }
+        #copy-button:active {
+             transform: scale(0.96); /* Slightly smaller click effect */
+        }
+
+        #copy-button svg {
+           vertical-align: middle; /* Align icon better */
+        }
+
+
+        /* --- Mobile Responsiveness --- */
+
+        /* Styles for screens smaller than 650px */
+        @media (max-width: 650px) {
+            body {
+                padding-top: 80px; /* More space for student info if it wraps */
+                padding-bottom: 20px;
+                 /* Prevent horizontal scroll if background overflows slightly */
+                 overflow-x: hidden;
+            }
+
+            .main-content {
+                width: 95%; /* Use more width on small screens */
+                padding: 15px; /* Slightly less padding */
+            }
+
+            h1 {
+                font-size: 1.8rem; /* Slightly smaller heading */
+                margin-bottom: 20px;
+            }
+
+            form {
+                padding: 20px; /* Slightly less padding */
+            }
+
+            input[type="text"], button {
+                font-size: 1rem; /* Adjust font size if needed */
+            }
+
+            .student-info {
+                position: static; /* Stack normally on small screens */
+                /* Alternatively, keep absolute but adjust position/size */
+                /* position: absolute; */
+                /* top: 10px; */
+                /* right: 10px; */
+                /* left: 10px; */ /* Or span width */
+                text-align: center; /* Center text if static */
+                padding: 10px;
+                margin-bottom: 15px; /* Space below if static */
+                width: calc(95% - 20px); /* Adjust width if static */
+                margin-left: auto;
+                margin-right: auto;
+                background-color: rgba(37, 37, 42, 0.8); /* Slightly more opaque */
+            }
+
+             .student-info h1 {
+                  font-size: 1rem; /* Smaller heading */
+                  margin-bottom: 5px;
+                  color: var(--text-color); /* Match text color */
+              }
+
+            .student-info p {
+                font-size: 0.8rem; /* Smaller text */
+                margin: 2px 0;
+                text-align: center; /* Center text */
+            }
+
+            #result {
+                padding: 15px; /* Less padding */
+            }
+
+             .result-header {
+                 flex-direction: column; /* Stack title and button */
+                 align-items: flex-start; /* Align items left */
+                 gap: 8px; /* Add gap */
+                 margin-bottom: 15px;
+             }
+
+            #copy-button {
+                /* Make button slightly larger on mobile for easier tapping */
+                 padding: 8px 12px;
+             }
+        }
+
+        /* Styles for screens smaller than 400px */
+        @media (max-width: 400px) {
+             h1 {
+                font-size: 1.6rem;
+             }
+             label {
+                 font-size: 0.9rem;
+             }
         }
 
         .loading {
@@ -279,7 +390,16 @@
         </form>
 
         <div id="result" style="display: none;">
-            <h3>Generated Prompt:</h3>
+            <div class="result-header"> <!-- Added wrapper for title and button -->
+                <h3>Generated Prompt:</h3>
+                <button id="copy-button" title="Copy prompt">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    </svg>
+                    <span>Copy</span>
+                </button>
+            </div>
             <p id="prompt-text"></p>
         </div>
         <div id="loading" class="loading" style="display: none;">Generating... please wait 🤔</div>
@@ -287,12 +407,17 @@
     </div>
     <script>
         // JavaScript remains the same - no changes needed here
+        // Keep existing variables
         const form = document.getElementById('prompt-form');
         const resultDiv = document.getElementById('result');
         const promptText = document.getElementById('prompt-text');
         const loadingDiv = document.getElementById('loading');
         const errorDiv = document.getElementById('error-message');
+        // Add reference to the copy button
+        const copyButton = document.getElementById('copy-button');
+        const copyButtonSpan = copyButton.querySelector('span'); // Get the span inside the button
 
+        // --- Form Submission Logic (Keep Existing) ---
         form.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
 
@@ -303,6 +428,8 @@
             resultDiv.style.display = 'none';
             errorDiv.style.display = 'none';
             loadingDiv.style.display = 'block';
+            copyButtonSpan.textContent = 'Copy'; // Reset button text
+            copyButton.disabled = false; // Re-enable button
 
             try {
                 const response = await fetch('/generate_prompt', {
@@ -332,6 +459,30 @@
                 errorDiv.style.display = 'block';
                 console.error('Fetch error:', error);
             }
+        });
+
+        // --- Copy Button Logic ---
+        copyButton.addEventListener('click', () => {
+            const textToCopy = promptText.textContent;
+            if (!textToCopy) return; // Don't copy if empty
+
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    // --- Visual Feedback ---
+                    copyButtonSpan.textContent = 'Copied!'; // Change text
+                    copyButton.disabled = true; // Briefly disable button
+
+                    // Reset button text after a short delay
+                    setTimeout(() => {
+                        copyButtonSpan.textContent = 'Copy';
+                        copyButton.disabled = false;
+                    }, 1500); // Reset after 1.5 seconds
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    // Optional: Show an error message to the user
+                    alert("Oops, couldn't copy the text!");
+                });
         });
     </script>
 </body>
